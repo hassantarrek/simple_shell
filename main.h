@@ -68,11 +68,11 @@ typedef struct passInfo
 	int errNum;
 	int lineCountFlag;
 	char *fname;
-	list_t *env;
-	list_t *history;
-	list_t *alias;
+	list_h *env;
+	list_h *history;
+	list_h *alias;
 	char **environ;
-	int env_Changed;
+	int envChanged;
 	int status;
 
 	char **cmdBuf;
