@@ -45,13 +45,13 @@ extern char **environ;
  */
 typedef struct liststr
 {
-        int num;
-        char *str;
-        struct liststr *next;
+	int num;
+	char *str;
+	struct liststr *next;
 } list_h;
 
 /**
- *struct passinfo - contains pseudo-arguements to pass into a function,
+ *struct passInfo - contains pseudo-arguements to pass into a function,
  *allowing uniform prototype for function pointer struct
  *@arg: arguements
  *@argv: array of strings
@@ -111,7 +111,7 @@ typedef struct builtIn
 	int (*func)(info_h *);
 } builtinTable;
 
-int main();
+int main(void);
 
 int hsh(info_h *, char **);
 int findBuiltin(info_h *);

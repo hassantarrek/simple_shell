@@ -5,8 +5,8 @@
  * Return: 0
  */
 
-int main()
+int main(void)
 {
-	int hsh();
+	int hsh(info_h *, char **);
 	return (0);
 }

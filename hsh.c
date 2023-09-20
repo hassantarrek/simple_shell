@@ -39,9 +39,7 @@ int hsh(info_h *info, char **av)
 	if (builtinRet == -2)
 	{
 		if (info->errNum == -1)
-			{
-				exit(info->status);
-			}
+			exit(info->status);
 		exit(info->errNum);
 	}
 	return (builtinRet);
