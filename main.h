@@ -111,8 +111,6 @@ typedef struct builtIn
 	int (*func)(info_h *);
 } builtinTable;
 
-int main(void);
-
 int hsh(info_h *, char **);
 int findBuiltin(info_h *);
 void findCmd(info_h *);
