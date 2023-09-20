@@ -5,12 +5,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <sys/types.h>
-#include <errno.h>
-#include <stddef.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
-#include <signal.h>
+#include <limits.h>
+#include <fcntl.h>
+#include <errno.h>
+
 
 /*read and write buffers*/
 #define READ_BUF_SIZE 1024
@@ -35,6 +36,19 @@
 #define HIST_MAX	4096
 
 extern char **environ;
+
+/**
+ * struct liststr - singly linked
+ * @num: number
+ * @str: a string
+ * @next: points to next node
+ */
+typedef struct liststr
+{
+        int num;
+        char *str;
+        struct liststr *next;
+} list_h;
 
 /**
  *struct passinfo - contains pseudo-arguements to pass into a function,
@@ -81,18 +95,6 @@ typedef struct passInfo
 	int histcount;
 } info_h;
 
-/**
- * struct liststr - singly linked
- * @num: number
- * @str: a string
- * @next: points to next node
- */
-typedef struct liststr
-{
-	int num;
-	char *str;
-	struct liststr *next;
-} list_h;
 
 #define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
@@ -109,6 +111,7 @@ typedef struct builtIn
 	int (*func)(info_h *);
 } builtinTable;
 
+int main();
 
 int hsh(info_h *, char **);
 int findBuiltin(info_h *);
@@ -147,10 +150,10 @@ void *_realloc(void *, unsigned int, unsigned int);
 
 int bfree(void **);
 
-int intAractive(info_h *);
+int interActive(info_h *);
 int isDelim(char, char *);
 int isAlpha(int);
-int atoi(char *);
+int _atoi(char *);
 
 int erratoi(char *);
 void printError(info_h *, char *);
@@ -171,12 +174,12 @@ void sigintHandler(int);
 
 void clearInfo(info_h *);
 void setInfo(info_h *, char **);
-void freeinfo(info_h *, int);
+void freeInfo(info_h *, int);
 
 char *getEnv(info_h *, const char *);
 int myEnv(info_h *);
 int mySetEnv(info_h *);
-int myUnseteEv(info_h *);
+int myUnsetEnv(info_h *);
 int populateEnvList(info_h *);
 
 char **getEnviron(info_h *);
@@ -189,16 +192,16 @@ int readHistory(info_h *info);
 int buildHistoryList(info_h *info, char *buf, int linecount);
 int renumberHistory(info_h *info);
 
-list_t *addNode(list_h **, const char *, int);
-list_t *addNode_end(list_h **, const char *, int);
-size_t printList_str(const list_h *);
+list_h *addNode(list_h **, const char *, int);
+list_h *addNodeEnd(list_h **, const char *, int);
+size_t printListStr(const list_h *);
 int deleteNodeAtIndex(list_h **, unsigned int);
-void freelist(list_h **);
+void freeList(list_h **);
 
 size_t listLen(const list_h *);
 char **listToStrings(list_h *);
 size_t printList(const list_h *);
-list_t *nodeStartsWith(list_h *, char *, char);
+list_h *nodeStartsWith(list_h *, char *, char);
 ssize_t getNodeIndex(list_h *, list_h *);
 
 int isChain(info_h *, char *, size_t *);
@@ -206,5 +209,11 @@ void checkChain(info_h *, char *, size_t *, size_t, size_t);
 int replaceAlias(info_h *);
 int replaceVars(info_h *);
 int replaceString(char **, char *);
+
+ssize_t inputBuf(info_h *info, char **buf, size_t *len);
+ssize_t readBuf(info_h *info, char *buf, size_t *i);
+int printAlias(list_h *node);
+int setAlias(info_h *info, char *str);
+int unsetAlias(info_h *info, char *str);
 
 #endif
