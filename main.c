@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * main - entry point
- * @ac: arg count
- * @av: arg vector
+ * main - entry point for simple shell poject in ALX
+ * @ac: argument
+ * @av: argument
  * Return: 0 or 1
  */
 
